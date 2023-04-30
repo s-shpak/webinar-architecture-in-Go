@@ -59,9 +59,9 @@ func (a *handler) getFoobarHandler(w http.ResponseWriter, _ *http.Request, ps ht
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	if _, err := w.Write(respBody); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("Content-Type", "application/json")
 }

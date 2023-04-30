@@ -7,7 +7,6 @@ import (
 	"hexagonal/internal/adapters/api/rest"
 	"hexagonal/internal/adapters/store"
 	"hexagonal/internal/adapters/store/memory"
-	"hexagonal/internal/config"
 	"hexagonal/internal/core/services/foobar"
 )
 
@@ -18,10 +17,8 @@ func main() {
 }
 
 func run() error {
-	store, err := store.NewStore(config.Config{
-		Store: store.Config{
-			Memory: &memory.Config{},
-		},
+	store, err := store.NewStore(store.Config{
+		Memory: &memory.Config{},
 	})
 	if err != nil {
 		return fmt.Errorf("failed to initialize a store: %w", err)

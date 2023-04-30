@@ -2,6 +2,7 @@ package foobar
 
 import (
 	"fmt"
+	"strconv"
 
 	"hexagonal/internal/core/domain"
 )
@@ -29,16 +30,29 @@ func (f *FoobarSimple) GetFoobar(req *domain.FoobarRequest) (*domain.FoobarRespo
 	if resp != nil {
 		return resp, nil
 	}
-	resp, err = f.calculateFoobar(req)
-	if err != nil {
-		return nil, fmt.Errorf("failed to calculate the foobar result for %+v: %w", req, err)
-	}
+	resp = f.calculateFoobar(req)
 	if err := f.store.SetFoobar(req, resp); err != nil {
 		return nil, fmt.Errorf("failed to store the foobar calculation in the store: %w", err)
 	}
-	return nil, nil
+	return resp, nil
 }
 
-func (f *FoobarSimple) calculateFoobar(req *domain.FoobarRequest) (*domain.FoobarResponse, error) {
-	return nil, nil
+func (f *FoobarSimple) calculateFoobar(req *domain.FoobarRequest) *domain.FoobarResponse {
+	resp := &domain.FoobarResponse{
+		Data: make([]string, 0, req.N),
+	}
+	for i := 1; i <= req.N; i++ {
+		var res string
+		if i%3 == 0 && i%5 == 0 {
+			res = "foobar"
+		} else if i%3 == 0 {
+			res = "foo"
+		} else if i%5 == 0 {
+			res = "bar"
+		} else {
+			res = strconv.Itoa(i)
+		}
+		resp.Data = append(resp.Data, res)
+	}
+	return resp
 }
