@@ -37,6 +37,10 @@ func (f *FoobarSimple) GetFoobar(req *domain.FoobarRequest) (*domain.FoobarRespo
 	return resp, nil
 }
 
+func (f *FoobarSimple) DoSmth() {
+	// do smth
+}
+
 func (f *FoobarSimple) calculateFoobar(req *domain.FoobarRequest) *domain.FoobarResponse {
 	resp := &domain.FoobarResponse{
 		Data: make([]string, 0, req.N),
